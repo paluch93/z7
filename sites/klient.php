@@ -76,20 +76,22 @@ echo <<<_END
 _END;
 
 echo "<ul id='files'>";
-$dir = opendir($row[4]);
-while(false !== ($file = readdir($dir)))
-  if($file != '.' && $file != '..') 
-  {
-	$file1=rawurlencode($file);
-	if(is_dir($file1))
+$path=$row[4];
+$dir = array_diff(scandir($path), array('.', '..'));
+
+foreach($dir as $x)
+{
+	$x1=rawurlencode($x);
+	if(is_dir($row[4].'/'.$x))
 	{
-		 echo '<li><a href='.$row[4].'/'.$file1.' target=_blank>'.$file.'<----KATALOG</a></li>';
+		 echo '<li><a href='.$row[4].'/'.$x1.' target=_blank>'.$x.'<----KATALOG</a></li>';
 	}
 	else
 	{
-		echo '<li><a href='.$row[4].'/'.$file1.' target=_blank>'.$file.'<----PLIK</a></li>';
+		echo '<li><a href='.$row[4].'/'.$x1.' target=_blank>'.$x.'<----PLIK</a></li>';
 	}
-  }
+}
+
 echo <<<_END
     </ul>
 </fieldset>
