@@ -7,7 +7,6 @@ echo "Błąd w logowaniu";
 }
 else
 $user=$_COOKIE['klientLogin'];
-
 $query="SELECT * FROM z7users WHERE login='$user'";
 $wynik=queryMysql($query);
 $rows1 = $wynik->num_rows;
@@ -73,14 +72,23 @@ echo <<<_END
     </fieldset>
 <fieldset>
     <legend>Pliki w chmurze</legend>
-    <ul id="files">
+<button onclick="window.open('pliki.php', 'newwindow', 'width=500, height=250'); return false;">Dodaj katalog</button>
 _END;
+
+echo "<ul id='files'>";
 $dir = opendir($row[4]);
 while(false !== ($file = readdir($dir)))
   if($file != '.' && $file != '..') 
   {
 	$file1=rawurlencode($file);
-    echo '<li><a href='.$row[4].'/'.$file1.'>'.$file.'</a></li>';
+	if(is_dir($file1))
+	{
+		 echo '<li><a href='.$row[4].'/'.$file1.' target=_blank>'.$file.'<----KATALOG</a></li>';
+	}
+	else
+	{
+		echo '<li><a href='.$row[4].'/'.$file1.' target=_blank>'.$file.'<----PLIK</a></li>';
+	}
   }
 echo <<<_END
     </ul>
